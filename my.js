@@ -1,0 +1,23 @@
+var mycontrol = function($scope){
+    //$scopeÇ≈Ç»Ç¢Ç∆ÇæÇﬂÇ¡Ç€Ç¢
+    $scope.users = [
+        {"name":"zZZ", "score":"999"},       
+        {"name":"ama", "score":"123"},
+        {"name":"kuso", "score":"456"},
+        {"name":"hoge", "score":"789"}
+    ];
+    $scope.today = new Date();
+}
+
+var userItemCtrl = function($scope){
+    $scope.increment = function(){
+        $scope.user.score++;
+    };
+}
+
+
+var formCtrl = function($scope){
+    $scope.addUser = function(){
+        //é¿ç€ÇÃí«â¡èàóùÇÕÇ±Ç±Ç…Ç¢ÇÎÇ¢ÇÎèëÇ¢ÇƒÇ¢Ç≠
+    }
+}

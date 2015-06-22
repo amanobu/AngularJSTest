@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app>
+  <!-- ng-appがAngularJSのコードということ -->
+  <head>
+    <meta charset="UTF-8">
+    <title>AngularJSのサンプル</title>
+    <script src="http://code.angularjs.org/angular-1.0.1.min.js"></script>
+    <script src="my.js"></script>
+  </head>
+  <body>
+    <h1>AngularJSのサンプル</h1>
+    入力フォームとの同期
+    <input type="text" ng-model="name" >
+    <p>こんにちは{{name}}</p>
+    <hr/>
+    <p>
+      <!-- jsonと関連 -->
+      jsonからのデータ取得
+      <div ng-controller="mycontrol">
+        <p>データの長さ：{{users.length}}</p>
+        <p>今日：{{today}}</p>
+        <ul>
+          <!-- リピートのサンプル -->
+          <li ng-repeat="user in users">
+            {{user.name}} {{user.score}}
+            {{user.name|uppercase}} {{user.score|number:4}}
+            <!-- |パイプでつなげるとフィルタをかけられる -->
+            {{today|date:'yyyymmdd'}}
+            <!-- おー日付のフォーマッティングも -->
+          </li>
+        </ul>
+        <ul>
+          <li ng-repeat="user in users|orderBy:'-name'|limitTo:2">
+            <!-- さらにソートと上位＊＊とか -->
+            {{user.name}} {{user.score}}
+          </li>
+        </ul>
+      </div>
+      <hr/>
+      <div ng-controller="mycontrol">
+        さらに入力によってフィルタリング
+        <input type="text" ng-model="query.name"><!-- nameでフィルタ -->
+        <ul>
+          <li ng-repeat="user in users|filter:query" ng-controller="userItemCtrl">
+            <!-- さらにソートと上位＊＊とか -->
+            {{user.name}} {{user.score}}
+            <!-- 一個一個の処理をJSでできたりとか -->
+            <button ng-click="increment()">+1</button>
+          </li>
+        </ul>
+      </div>
+      <hr/>
+      <div ng-controller="formCtrl">
+        <!-- novalidateはhtml5のvaridate機能を無効かするということらしい -->
+        <form novalidate name="myForm" ng-submit="addUser()" >
+          <p>Name:<input type="text" name="name" ng-model="user.name" required ng-minlength="5" ng-maxlength="8">
+            <!-- チェックルールは上記のように書く。日本語はどうなんだろうか・・・ -->
+            <!-- エラーがあったときはこんな感じのコード -->
+            <span ng-show="myForm.name.$error.required">必須だぜ!</span>
+            <span ng-show="myForm.name.$error.minlength">短いぜ!</span>
+            <span ng-show="myForm.name.$error.maxlength">長すぎだぜ!</span>
+          </p>
+          <p>email:<input type="email" name="email" ng-model="user.email">
+            <span ng-show="myForm.email.$error.email">emailの形式がおかしいぜ</span>
+
+          </p>
+          <p>数字:<input type="number" name="num" required ng-model="user.num"></p>
+          <p>チェック:<input type="checkbox" ng-model="user.adult" ng-true-value="大人ー" ng-false-value="子供！"></p>
+          <p>ラジオ:
+            <input type="radio" ng-model="user.radiobutton" value="hoge1">hoge1
+            <input type="radio" ng-model="user.radiobutton" value="hoge2">hoge2
+          </p>
+          <p>Memo:
+            <textarea ng-model="user.memo" ng-maxlength="140"></textarea>残り文字数{{140-user.memo.length}}
+          </p>
+          <p>color:
+            <!-- ng-optionsの中身はほんとはJSの中で書くべきだと思うけど、とりあえずこのようにも書けるらしい -->
+            <select ng-model="user.color" ng-options="color for color in ['red','blue','pink']"></select>
+          </p>
+          <p><input type="submit" value="send" ></p>
+        </form>
+        <!-- デバッグとかこれでできる -->
+        <pre>{{user|json}}</pre>
+      </div>
+    </p>
+  </body>
+</html>
